@@ -241,8 +241,33 @@ func (m *Map) Range(f func (key, value interface{}) bool)
    fmt.Println("Channel is open:", data)
   }
   ```
-  
+
 The behavior of channels is summarized below:
 
 ![img_4.png](img_4.png)
+
+#### The select statement
+
+- The `select` statement lets a goroutine wait on multiple channel operations. These could be both send and receive
+  operations.
+- It blocks until one of the operations on its channels is ready.
+- If multiple operations are ready, one of them is chosen at random.
+- The select statement is similar to a `switch` statement.
+  ```go
+  func doWork(ch1, ch2 chan string) {
+      for {
+          select {
+          case msg1 := <-ch1:
+              fmt.Println("received from ch1", msg1)
+          case msg2 := <-ch2:
+              fmt.Println("received from ch1", msg2)
+          default:
+              fmt.Println("Nothing received")
+          }
+      }
+  }
+  ```
+
+
+
 
