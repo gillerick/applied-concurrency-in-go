@@ -209,3 +209,12 @@ Mutex and allows it to be used by another goroutine
 ```go
 messages := make(chan string, 3)
 ```
+
+#### Channel directions
+
+- Channels can either be unidirectional or bidirectional. Unidirectional channels can be `receive only` channels (<-chan
+  T) or `send only` channels (chan<- T)
+- It is a recommended practice to use unidirectional channels as they provide a very clear expectation of a channel's
+  expected usage and provide type safety to our programs. They also help avoid confusion to other future engineers
+  extending our code.
+
