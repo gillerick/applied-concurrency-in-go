@@ -153,15 +153,26 @@ go run -race server.go
 - Incurs [performance](https://medium.com/@deckarep/the-new-kid-in-town-gos-sync-map-de24a6bf7c2c) overhead and should
   only be used as necessary
 
-#### Using the sync.Map
+##### Using the sync.Map
 
 ```go
 func (m *Map) Load(key interface{}) (value interface{}, ok bool)
 func (m *Map) Store(key, value interface{})
-func (m *Map) Range(f func(key, value interface{}) bool)
+func (m *Map) Range(f func (key, value interface{}) bool)
 ```
 
 - The `Load` method reads an existing item from the map and returns nil and false when value does not exist
 - The `Store` method inserts or updates (upserts) a new key value pair
 - The `Range` method which takes in a function and sequentially calls it for all the values in the map
 
+#### The sync.Mutex
+
+The Mutex is initialized unlocked using `var m sync.Mutex`
+
+```go
+func (m *Mutex) Lock()
+func (m *Mutex) Unlock()
+```
+
+The `Lock` method locks the Mutex and will block until the Mutex is in an unlocked state The `Unlock` method unlocks the
+Mutex and allows it to be used by another goroutine
