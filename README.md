@@ -43,3 +43,31 @@ can run more goroutines at once.
 
 ![img_2.png](img_2.png)
 
+#### Goroutines Exercise
+In executing the `serialtaskexecution` without goroutines, the following output was realized:
+
+````text
+Done making hotel reservation.
+Done booking flight tickets.
+Done ordering a dress.
+Done paying Credit Card bills.
+Wrote 1/3rd of the mail.
+Wrote 2/3rds of the mail.
+Done writing the mail.
+Listened to 10 minutes of audio book.
+Done listening to audio book.
+````
+
+However, when goroutines was used, the following output was realized:
+
+````text
+Done making hotel reservation.
+Done booking flight tickets.
+Done ordering a dress.
+Done paying Credit Card bills.
+Wrote 1/3rd of the mail.
+Listened to 10 minutes of audio book.
+````
+
+This is because `goroutines` are not waited upon. The code in the `main` function continues executing and once the
+control flow reaches the end of the main function, the program ends.
