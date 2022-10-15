@@ -97,3 +97,13 @@ Done writing the mail.
 
 Adding `go` in-front of `task(&waitGroup)` enables the achievement of maximum concurrency by letting Go runtime determine
 the order of execution of the tasks.
+
+### Goroutines
+
+These are independently executing functions that run on top of normal threads but lighter. They are therefore sometimes referred to as `lightweight threads`.
+
+1. They are independently executing functions
+2. Sometimes referred to as lightweight threads
+3. Run on top of threads
+4. Outnumber threads by orders of magnitude
+5. Runtime optimally schedules goroutines
