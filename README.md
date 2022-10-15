@@ -95,15 +95,31 @@ Wrote 2/3rds of the mail.
 Done writing the mail.
 ```
 
-Adding `go` in-front of `task(&waitGroup)` enables the achievement of maximum concurrency by letting Go runtime determine
-the order of execution of the tasks.
+Adding `go` in-front of `task(&waitGroup)` enables the achievement of maximum concurrency by letting Go runtime
+determine the order of execution of the tasks.
 
 ### Goroutines
 
-These are independently executing functions that run on top of normal threads but lighter. They are therefore sometimes referred to as `lightweight threads`.
+These are independently executing functions that run on top of normal threads but lighter. They are therefore sometimes
+referred to as `lightweight threads`.
 
 1. They are independently executing functions
 2. Sometimes referred to as lightweight threads
 3. Run on top of threads
 4. Outnumber threads by orders of magnitude
 5. Runtime optimally schedules goroutines
+
+### Methods of the sync.WaitGroup
+
+The `sync` package provides locks and synchronization primitives for use in concurrent programming. The WaitGroup is used
+to wait for a collection of goroutines to finish.
+
+```go
+func (wg *WaitGroup) Add(delta int)
+func (wg *WaitGroup) Done()
+func (wg *WaitGroup) Wait()
+```
+
+- `Add` adds a given number to the inner counter
+- `Done` decrements the counter by 1 and is used to denote the completion of a goroutine
+- `Wait` blocks the goroutine from which it is invoked until the counter reaches zero
