@@ -324,19 +324,27 @@ context.WithTimeout
 ```
 
 The syntax for using context cancellation is shown below:
-```go
-func doWork(ctx context.Context, input <-chan string) {
-	for {
-		select {
-		case in := <-input:
-			fmt.Println("Got some input:", in)
-		case <-ctx.Done():
-			fmt.Println("Out of time!", ctx.Err())
-			return
-		}
-	}
-}
-```
+
+  ```go
+  func doWork(ctx context.Context, input <-chan string) {
+      for {
+          select {
+          case in := <-input:
+              fmt.Println("Got some input:", in)
+          case <-ctx.Done():
+              fmt.Println("Out of time!", ctx.Err())
+              return
+          }
+      }
+  }
+  ```
+
+##### 3.1. Advantages of context
+
+- Useful for passing request IDs from handlers further into the application for request tracing and debugging.
+- Can be used to stop expensive operations from running unnecessarily. This is possible due to the propagated
+  cancellation of derived contexts.
+- They help in keeping the system latency down by providing an inbuilt hard stop.
 
 
 
