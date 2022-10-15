@@ -157,8 +157,8 @@ go run -race server.go
 
   ```go
   func (m *Map) Load(key interface{}) (value interface{}, ok bool)
-  func (m *Map) Store(key, value interface{})
-  func (m *Map) Range(f func (key, value interface{}) bool)
+func (m *Map) Store(key, value interface{})
+func (m *Map) Range(f func (key, value interface{}) bool)
   ```
 
 - The `Load` method reads an existing item from the map and returns nil and false when value does not exist
@@ -174,8 +174,8 @@ go run -race server.go
   func (m *Mutex) Unlock()
   ```
 
-- The `Lock` method locks the Mutex and will block until the Mutex is in an unlocked state The `Unlock` method unlocks the
-Mutex and allows it to be used by another goroutine
+- The `Lock` method locks the Mutex and will block until the Mutex is in an unlocked state The `Unlock` method unlocks
+  the Mutex and allows it to be used by another goroutine
 
 ### Channels
 
@@ -219,11 +219,30 @@ Mutex and allows it to be used by another goroutine
   extending our code.
 
 #### Closing channels
+
 - Closing channels signals that no more values will be sent on it. The syntax for closing a channel is as shown below:
   ```go
   close(ch)
   ```
-- Only bidirectional and send only channels can be closed. Attempting to close a `receive only` channel would case a compilation error.
-- Receivers immediately receive the zero value of the channel data type from a closed channel.
+- Only bidirectional and send only channels can be closed. Attempting to close a `receive only` channel would case a
+  compilation error.
 - Senders panic when sending to a closed channel.
+- Receivers immediately receive the zero value of the channel data type from a closed channel. This means that without
+  checking whether a nil value came from a closed or open channel, it is possible to get erroneous data. This can be
+  done as shown below:
+
+  ```go
+  func doWork(ch chan string) {
+  data, ok := <-ch
+  if !ok {
+	  fmt.Println("Channel is closed")
+	  return
+   }
+   fmt.Println("Channel is open:", data)
+  }
+  ```
+  
+The behavior of channels is summarized below:
+
+![img_4.png](img_4.png)
 
