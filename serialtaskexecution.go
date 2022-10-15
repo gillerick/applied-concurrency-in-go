@@ -23,12 +23,12 @@ func payCreditDebitCardBills() {
 // Writing Mail
 func writeAMail() {
 	fmt.Println("Wrote 1/3rd of the mail.")
-	continueWritingMail1()
+	go continueWritingMail1()
 }
 
 func continueWritingMail1() {
 	fmt.Println("Wrote 2/3rds of the mail.")
-	continueWritingMail2()
+	go continueWritingMail2()
 }
 
 func continueWritingMail2() {
@@ -38,7 +38,7 @@ func continueWritingMail2() {
 // Listening to Audio Book
 func listenToAudioBook() {
 	fmt.Println("Listened to 10 minutes of audio book.")
-	continueListeningToAudioBook()
+	go continueListeningToAudioBook()
 }
 func continueListeningToAudioBook() {
 	fmt.Println("Done listening to audio book.")
