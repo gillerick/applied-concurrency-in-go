@@ -133,16 +133,35 @@ called.
 - Race conditions create inconsistent results
 - Problems often occur with a `check-then-act` operation.
 - Go toolchain has a built-in race detector.
+
 ```text
 go run -race server.go
 ```
 
 ### Synchronization primitives in Go
+
 - Channels
 - Mutexes
 - r/w mutexes
 - atomic operations
 
-[comment]: <> (#### The sync.Map)
+#### The sync.Map
 
+- Safe for concurrent use by multiple goroutines
+- Equivalent to a safe ```map[interface{}]interface{}```
+- The zero value is empty and ready for use
+- Incurs [performance](https://medium.com/@deckarep/the-new-kid-in-town-gos-sync-map-de24a6bf7c2c) overhead and should
+  only be used as necessary
+
+#### Using the sync.Map
+
+```go
+func (m *Map) Load(key interface{}) (value interface{}, ok bool)
+func (m *Map) Store(key, value interface{})
+func (m *Map) Range(f func(key, value interface{}) bool)
+```
+
+- The `Load` method reads an existing item from the map and returns nil and false when value does not exist
+- The `Store` method inserts or updates (upserts) a new key value pair
+- The `Range` method which takes in a function and sequentially calls it for all the values in the map
 
