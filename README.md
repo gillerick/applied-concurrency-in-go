@@ -94,3 +94,6 @@ Done listening to audio book.
 Wrote 2/3rds of the mail.
 Done writing the mail.
 ```
+
+Adding `go` in-front of `task(&waitGroup)` enables the achievement of maximum concurrency by letting Go runtime determine
+the order of execution of the tasks.
