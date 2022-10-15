@@ -268,6 +268,39 @@ The behavior of channels is summarized below:
   }
   ```
 
+### Concurrency patterns
+
+#### 1. Signalling that work is done
+- This can be done by closing the respective channel where data was being sent. Sending data to a closed channel,
+  however, causes a panic.
+- A common pattern for gracefully shutting down work is to instead close an additional channel known as
+  the `signal channel`. The sole purpose of this channel is to signal that work has been completed. Its data type is an empty struct so as to take as little memory as possible. This is shown below:
+
+  ```go
+  func doWork(input <-chan string, done <-chan struct{}) {
+      for {
+          select {
+          case in := <-input:
+              fmt.Println("Got some input", in)
+          case <-done:
+              return
+          }
+      }
+  }
+  ```
+- Since attempting to close an already closed channel panics, we should therefore ensure that the done channel is only closed once. The package `sync` provides `sync.Once` which can be used as shown below:
+  ```go
+  func sayHelloOnce() {
+      var once sync.Once
+      for i := 0; i < 10; i++ {
+          once.Do(func() {
+              fmt.Println("Hello, world!")
+          })
+      }
+  
+  }
+  ```
+
 
 
 
