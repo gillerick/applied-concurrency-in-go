@@ -179,6 +179,8 @@ Mutex and allows it to be used by another goroutine
 
 ### Channels
 
+- Channels are the pipes that connect concurrent goroutines. You can send values into channels from one goroutine and
+  receive those values into another goroutine.
 - The value proposition of `channels` in Go is that there is no need to pass values to the shared context of the main
   function. The channel acts as a pass-through.
 - Channels is Go are first-class citizens and therefore can be used without importing any extra packages.
@@ -192,3 +194,18 @@ Mutex and allows it to be used by another goroutine
   operation is successfully completed.
 
 ![img_3.png](img_3.png)
+
+#### Channel buffering
+
+- By default, channels are *unbuffered*, meaning that they will only accept sends (chan <- ) if there is a corresponding
+  receive (<- chan) ready to receive the sent value.
+- _Unbuffered channels_ are zero capacity channels which require both the sender and the receiver to be present to
+  successfully complete operations.
+- _Buffered channels_ accept a limited number of values without a corresponding receiver for those values. The channel
+  below, for instance, will accept upto 3 values even without a receiving channel.
+- Channels can therefore be used to support synchronous (unbuffered channels) and asynchronous (buffered channels)
+  communication.
+
+```go
+messages := make(chan string, 3)
+```
