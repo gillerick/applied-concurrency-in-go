@@ -155,11 +155,11 @@ go run -race server.go
 
 ##### Using the sync.Map
 
-```go
-func (m *Map) Load(key interface{}) (value interface{}, ok bool)
-func (m *Map) Store(key, value interface{})
-func (m *Map) Range(f func (key, value interface{}) bool)
-```
+  ```go
+  func (m *Map) Load(key interface{}) (value interface{}, ok bool)
+  func (m *Map) Store(key, value interface{})
+  func (m *Map) Range(f func (key, value interface{}) bool)
+  ```
 
 - The `Load` method reads an existing item from the map and returns nil and false when value does not exist
 - The `Store` method inserts or updates (upserts) a new key value pair
@@ -167,14 +167,14 @@ func (m *Map) Range(f func (key, value interface{}) bool)
 
 #### The sync.Mutex
 
-The Mutex is initialized unlocked using `var m sync.Mutex`
+- The Mutex is initialized unlocked using `var m sync.Mutex`
 
-```go
-func (m *Mutex) Lock()
-func (m *Mutex) Unlock()
-```
+  ```go
+  func (m *Mutex) Lock()
+  func (m *Mutex) Unlock()
+  ```
 
-The `Lock` method locks the Mutex and will block until the Mutex is in an unlocked state The `Unlock` method unlocks the
+- The `Lock` method locks the Mutex and will block until the Mutex is in an unlocked state The `Unlock` method unlocks the
 Mutex and allows it to be used by another goroutine
 
 ### Channels
@@ -206,9 +206,9 @@ Mutex and allows it to be used by another goroutine
 - Channels can therefore be used to support synchronous (unbuffered channels) and asynchronous (buffered channels)
   communication.
 
-```go
-messages := make(chan string, 3)
-```
+  ```go
+  messages := make(chan string, 3)
+  ```
 
 #### Channel directions
 
@@ -217,4 +217,13 @@ messages := make(chan string, 3)
 - It is a recommended practice to use unidirectional channels as they provide a very clear expectation of a channel's
   expected usage and provide type safety to our programs. They also help avoid confusion to other future engineers
   extending our code.
+
+#### Closing channels
+- Closing channels signals that no more values will be sent on it. The syntax for closing a channel is as shown below:
+  ```go
+  close(ch)
+  ```
+- Only bidirectional and send only channels can be closed. Attempting to close a `receive only` channel would case a compilation error.
+- Receivers immediately receive the zero value of the channel data type from a closed channel.
+- Senders panic when sending to a closed channel.
 
