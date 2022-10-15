@@ -111,8 +111,8 @@ referred to as `lightweight threads`.
 
 ### Methods of the sync.WaitGroup
 
-The `sync` package provides locks and synchronization primitives for use in concurrent programming. The WaitGroup is used
-to wait for a collection of goroutines to finish.
+The `sync` package provides locks and synchronization primitives for use in concurrent programming. The WaitGroup is
+used to wait for a collection of goroutines to finish.
 
 ```go
 func (wg *WaitGroup) Add(delta int)
@@ -123,3 +123,6 @@ func (wg *WaitGroup) Wait()
 - `Add` adds a given number to the inner counter
 - `Done` decrements the counter by 1 and is used to denote the completion of a goroutine
 - `Wait` blocks the goroutine from which it is invoked until the counter reaches zero
+
+NB: A good practice is to invoke the `Done` method as a deferred call at the beginning of the function to ensure it is
+called.
