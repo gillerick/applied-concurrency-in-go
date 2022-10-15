@@ -176,3 +176,19 @@ func (m *Mutex) Unlock()
 
 The `Lock` method locks the Mutex and will block until the Mutex is in an unlocked state The `Unlock` method unlocks the
 Mutex and allows it to be used by another goroutine
+
+### Channels
+
+- The value proposition of `channels` in Go is that there is no need to pass values to the shared context of the main
+  function. The channel acts as a pass-through.
+- Channels is Go are first-class citizens and therefore can be used without importing any extra packages.
+- The channel operator is the arrow operator `<-`.
+- Channels are associated with a type and only the declared data type can be transported in them. The syntax to declare
+  a channel of type T is ```ch := make(chan T```
+- The zero value of channels is `nil`.
+- Sending to a channel is done with `ch <- data`; the arrow points into the channel as data travels into it.
+- Receiving is done with `data := <- ch` ; the arrow points away from the channel as data travels out of it.
+- Channels send and receive operations are blocking; meaning that code execution will stop until the send or receive
+  operation is successfully completed.
+
+![img_3.png](img_3.png)
