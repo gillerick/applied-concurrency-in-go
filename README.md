@@ -136,3 +136,13 @@ called.
 ```text
 go run -race server.go
 ```
+
+### Synchronization primitives in Go
+- Channels
+- Mutexes
+- r/w mutexes
+- atomic operations
+
+[comment]: <> (#### The sync.Map)
+
+
