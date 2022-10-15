@@ -126,3 +126,13 @@ func (wg *WaitGroup) Wait()
 
 NB: A good practice is to invoke the `Done` method as a deferred call at the beginning of the function to ensure it is
 called.
+
+### Race conditions
+
+- Race conditions occur when multiple goroutines read and write shared data without synchronization mechanisms.
+- Race conditions create inconsistent results
+- Problems often occur with a `check-then-act` operation.
+- Go toolchain has a built-in race detector.
+```text
+go run -race server.go
+```
