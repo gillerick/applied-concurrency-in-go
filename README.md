@@ -205,6 +205,8 @@ func (m *Map) Range(f func (key, value interface{}) bool)
   below, for instance, will accept upto 3 values even without a receiving channel.
 - Channels can therefore be used to support synchronous (unbuffered channels) and asynchronous (buffered channels)
   communication.
+- One of the benefits of buffered channels is that they can act as a cheap in-memory queue thus decoupling producers
+  from consumers.
 
   ```go
   messages := make(chan string, 3)
@@ -327,16 +329,16 @@ The syntax for using context cancellation is shown below:
 
   ```go
   func doWork(ctx context.Context, input <-chan string) {
-      for {
-          select {
-          case in := <-input:
-              fmt.Println("Got some input:", in)
-          case <-ctx.Done():
-              fmt.Println("Out of time!", ctx.Err())
-              return
-          }
-      }
-  }
+for {
+select {
+case in := <-input:
+fmt.Println("Got some input:", in)
+case <-ctx.Done():
+fmt.Println("Out of time!", ctx.Err())
+return
+}
+}
+}
   ```
 
 ##### 3.1. Advantages of context
