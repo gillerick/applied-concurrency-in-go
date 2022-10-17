@@ -329,19 +329,19 @@ context.WithTimeout
 
 The syntax for using context cancellation is shown below:
 
-  ```go
-  func doWork(ctx context.Context, input <-chan string) {
-for {
-select {
-case in := <-input:
-fmt.Println("Got some input:", in)
-case <-ctx.Done():
-fmt.Println("Out of time!", ctx.Err())
-return
+ ```go
+func doWork(ctx context.Context, input <-chan string) {
+	for {
+		select {
+		case in := <-input:
+			fmt.Println("Got some input:", in)
+		case <-ctx.Done():
+			fmt.Println("Out of time!", ctx.Err())
+			return
+		}
+	}
 }
-}
-}
-  ```
+```
 
 ##### 3.1. Advantages of context
 
