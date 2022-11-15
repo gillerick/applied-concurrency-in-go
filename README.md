@@ -380,5 +380,17 @@ return
   quorum_ and stop accepting writes, effectively causing all the existing requests to fail. This is kind of a system
   performing a DDoS attack on itself.
 - Rate limiting allows us to reason about the performance and stability of our system by preventing it from falling
-  outside the boundaries already investigated. 
+  outside the boundaries already investigated.
+
+##### 5.1. Token bucket
+
+- Most rate limiting is implemented by using an algorithm known as _token bucket_.
+- Assuming that to utilize a resource, you have to have an _access token_ for the resource. Without the token, your
+  request is denied.
+- Now imagine these tokens are stored in a bucket waiting to be retrieved for usage and the bucket has a depth of `d`,
+  indicating that it can hold `d` access tokens at a time.
+- Every time you access the resource, your tokens reduce by one up to a point when there is none and your request is
+  either denied or queued until the tokens are replenished.
+- In order to replenish the tokens, we could define a rate `r` at which the tokens are added back into the bucket. This
+  is what is commonly referred to as _rate-limiting_.
 
