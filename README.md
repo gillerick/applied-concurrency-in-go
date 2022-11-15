@@ -365,4 +365,20 @@ return
 - Although this technique can be expensive to set up and maintain, if speed is the top most priority, it is a valuable
   technique that additionally provides _fault tolerance_ and _scalability_.
 
+#### 5. Rate limiting
+
+- Rate limiting refers to _constraining_ the number of times _some kind of resource_ is accessed to some finite number
+  per unit of time.
+- The benefits include:
+    - Prevents entire classes of attack vectors against a system.
+    - Prevents a legitimate user from _degrading_ the performance of the whole system and affecting other users or even
+      causing _death-spirals_
+- Even with only a single user, rate limits can be advantageous. A lot of the time, systems have been developed to work
+  well under the common use case, but may begin behaving differently under different circumstances. This effect may
+  cascade through the system and have drastic, unintended consequences.
+- For instance, under a load, the system may begin _dropping packets_ causing the distributed system to _lose its
+  quorum_ and stop accepting writes, effectively causing all the existing requests to fail. This is kind of a system
+  performing a DDoS attack on itself.
+- Rate limiting allows us to reason about the performance and stability of our system by preventing it from falling
+  outside the boundaries already investigated. 
 
