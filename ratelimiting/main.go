@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"golang.org/x/time/rate"
 	"log"
 	"os"
 	"sync"
@@ -42,15 +43,25 @@ func main() {
 
 }
 
-type APIConnection struct{}
+type APIConnection struct {
+	rateLimiter *rate.Limiter
+}
 
 func Open() *APIConnection {
-	return &APIConnection{}
+	return &APIConnection{
+		// 1. We set the rate limit for all API connections to one event per second
+		rateLimiter: rate.NewLimiter(rate.Limit(1), 1),
+	}
 }
 
 // ReadFile is an endpoint for reading files
 func (a *APIConnection) ReadFile(ctx context.Context) error {
-	//ToDO: Add some work here
+	// 2. We wait on the rate limiter to have enough access tokens for us to complete our request
+	if err := a.rateLimiter.Wait(ctx); err != nil {
+		return err
+	}
+
+	//Pretend to do some work here
 	return nil
 }
 
