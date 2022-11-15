@@ -331,15 +331,15 @@ The syntax for using context cancellation is shown below:
 
  ```go
 func doWork(ctx context.Context, input <-chan string) {
-	for {
-		select {
-		case in := <-input:
-			fmt.Println("Got some input:", in)
-		case <-ctx.Done():
-			fmt.Println("Out of time!", ctx.Err())
-			return
-		}
-	}
+for {
+select {
+case in := <-input:
+fmt.Println("Got some input:", in)
+case <-ctx.Done():
+fmt.Println("Out of time!", ctx.Err())
+return
+}
+}
 }
 ```
 
@@ -350,7 +350,11 @@ func doWork(ctx context.Context, input <-chan string) {
   cancellation of derived contexts.
 - They help in keeping the system latency down by providing an inbuilt hard stop.
 
+#### 4. Replicated requests
 
+- For certain applications, receiving a response as quickly as possible is the top priority. In such instances, one can
+  replicate the request to multiple handlers (goroutines, processes or servers), and one of them will return faster than
+  the other ones; you can immediately return the result.
 
 
 
