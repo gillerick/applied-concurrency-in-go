@@ -355,6 +355,14 @@ return
 - For certain applications, receiving a response as quickly as possible is the top priority. In such instances, one can
   replicate the request to multiple handlers (goroutines, processes or servers), and one of them will return faster than
   the other ones; you can immediately return the result.
-
+- In this approach, it must be noted that all the handlers need to have _equal opportunity to service the request_. In
+  other words, you are not going to have a chance at receiving the fastest time from a handler that can't service the
+  request.
+- A different symptom of the same problem is uniformity. If your handlers are too much alike, the chances that any one
+  will be an outlier is smaller. You should only replicate out requests like this to handlers that have different
+  runtime
+  conditions: different processes, machines, paths to a data store, or access to different data stores altogether.
+- Although this technique can be expensive to set up and maintain, if speed is the top most priority, it is a valuable
+  technique that additionally provides _fault tolerance_ and _scalability_.
 
 
