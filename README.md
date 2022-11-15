@@ -13,13 +13,13 @@ response and sending it back to the client.
 **Parallel** events or tasks execute simultaneously and independently. True parallel events require multiple CPUs. Each
 task runs in isolation from each other and uses all the resources it needs to accomplish its objective.
 
-![img.png](img.png)
+![img.png](resources/images/img.png)
 
 **Concurrent** tasks or events are interleaving and can happen in any given order. It is a non-deterministic way of
 achieving multiple tasks. Concurrent tasks seem to happen simultaneously while in actual sense, they are being swapped
 very quickly.
 
-![img_1.png](img_1.png)
+![img_1.png](resources/images/img_1.png)
 
 #### Examples of concurrent tasks in a typical computer
 
@@ -41,7 +41,7 @@ In Go, concurrent tasks are called _goroutines_. Other programming languages hav
 but goroutines require **_less computer memory_** than threads, and _**less time to start up and stop**_, meaning you
 can run more goroutines at once.
 
-![img_2.png](img_2.png)
+![img_2.png](resources/images/img_2.png)
 
 #### Goroutines Exercise
 
@@ -195,7 +195,7 @@ func (m *Map) Range(f func (key, value interface{}) bool)
 - Channels send and receive operations are blocking; meaning that code execution will stop until the send or receive
   operation is successfully completed.
 
-![img_3.png](img_3.png)
+![img_3.png](resources/images/img_3.png)
 
 #### Channel buffering
 
@@ -248,7 +248,7 @@ func (m *Map) Range(f func (key, value interface{}) bool)
 
 The behavior of channels is summarized below:
 
-![img_4.png](img_4.png)
+![img_4.png](resources/images/img_4.png)
 
 #### The select statement
 
