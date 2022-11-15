@@ -394,3 +394,24 @@ return
 - In order to replenish the tokens, we could define a rate `r` at which the tokens are added back into the bucket. This
   is what is commonly referred to as _rate-limiting_.
 
+##### 5.2. Example explanation
+
+Without rate limiting, the API requests are fielded almost simultaneously. The clients are free to access the system as
+frequently as they like.
+
+```cmd
+20:08:28 ReadFile
+20:08:28 ResolveAddress
+20:08:28 ResolveAddress
+20:08:28 ResolveAddress
+20:08:28 ResolveAddress
+20:08:28 ResolveAddress
+20:08:28 ReadFile
+20:08:28 ReadFile
+20:08:28 ResolveAddress
+20:08:28 ReadFile
+20:08:28 ReadFile
+20:08:28 ReadFile
+20:08:28 ReadFile
+
+```
