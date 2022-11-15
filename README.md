@@ -413,5 +413,20 @@ frequently as they like.
 20:08:28 ReadFile
 20:08:28 ReadFile
 20:08:28 ReadFile
+```
 
+Upon implementing a rate limiter for the `ReadFile` endpoint, its requests are now completed only once every second.
+
+```cmd
+20:21:07 ReadFile
+20:21:07 ResolveAddress
+20:21:07 ResolveAddress
+20:21:07 ResolveAddress
+20:21:07 ResolveAddress
+20:21:07 ResolveAddress
+20:21:07 ResolveAddress
+20:21:07 ResolveAddress
+20:21:07 ResolveAddress
+20:21:07 Done
+20:21:07 ResolveAddress
 ```
