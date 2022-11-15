@@ -60,13 +60,15 @@ func (a *APIConnection) ReadFile(ctx context.Context) error {
 	if err := a.rateLimiter.Wait(ctx); err != nil {
 		return err
 	}
-
 	//Pretend to do some work here
 	return nil
 }
 
 // ResolveAddress is an endpoint for resolving a domain name to an IP address
 func (a *APIConnection) ResolveAddress(ctx context.Context) error {
-	//TODO: Add some work here
+	if err := a.rateLimiter.Wait(ctx); err != nil {
+		return err
+	}
+	//Pretend to do some work here
 	return nil
 }
