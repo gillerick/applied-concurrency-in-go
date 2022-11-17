@@ -430,3 +430,22 @@ Upon implementing a rate limiter for the `ReadFile` endpoint, its requests are n
 20:21:07 Done
 20:21:07 ResolveAddress
 ```
+
+#### 6. Queuing
+
+- When we accept work for a pipeline even though it is not ready, we call this _queuing_.
+- While introducing queuing into a system is very useful, it's usually one of the last techniques that should be
+  considered.
+- Adding queues prematurely can hide synchronization issues such as deadlocks and live-locks, and further, as a program
+  converges toward correctness, more or less queuing may be needed.
+- Queuing will almost never speed up the total runtime of a program; it will only allow the program to behave
+  differently.
+- The utility of a queue is not that reduces the runtime of a program but rather that it reduces its blocking
+  state time. This allows the program to continue doing its work and instead of altogether blocking clients, will
+  instead delay their requests.
+- In this way, the true utility of a queue is to _decouple stages_ so that the runtime of one stage has no impact on the
+  runtime of another. Decoupling stages in this manner then cascades to alter the runtime behaviour of the system as a
+  whole, which can be either good or bad depending on the system in question.
+- The following are some of the areas where a queue would be applicable:
+    - If batching requests in a stage saves time
+    - If delays in a stage produce a feedback loop into the system.
