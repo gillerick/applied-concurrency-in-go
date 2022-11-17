@@ -449,3 +449,13 @@ Upon implementing a rate limiter for the `ReadFile` endpoint, its requests are n
 - The following are some of the areas where a queue would be applicable:
     - If batching requests in a stage saves time
     - If delays in a stage produce a feedback loop into the system.
+
+##### 6.1. Batching Example
+
+- One example of a batching process is a stage that buffers input in something faster (e.g. memory) than it is designed
+  to send to (e.g. disk). The example below demonstrates a simple comparison of a buffered write to a queue verses an
+  unbuffered write.
+
+```go
+
+```
