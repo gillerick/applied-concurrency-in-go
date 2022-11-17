@@ -457,5 +457,40 @@ Upon implementing a rate limiter for the `ReadFile` endpoint, its requests are n
   unbuffered write.
 
 ```go
-
+func BenchmarkUnbufferedWrite(b *testing.B) {
+	performWrite(b, tmpFileOrFatal())
+}
+func BenchmarkBufferedWrite(b *testing.B) {
+	bufferredFile := bufio.NewWriter(tmpFileOrFatal())
+	performWrite(b, bufio.NewWriter(bufferredFile))
+}
+func tmpFileOrFatal() *os.File {
+	file, err := os.CreateTemp("", "tmp")
+	if err != nil {
+		log.Fatalf("error: %v", err)
+	}
+	return file
+}
+func performWrite(b *testing.B, writer io.Writer) {
+	done := make(chan interface{})
+	defer close(done)
+	b.ResetTimer()
+	for bt := range take(done, repeat(done, byte(0)), b.N) {
+		writer.Write([]byte{bt.(byte)})
+	}
+}
 ```
+
+- Buffered write is much faster that the unbuffered write because in `bufio.Writer`, the writes are queued internally
+  into a buffer until a sufficient chunk has been accumulated, and the chunk is written out, in a process known as _
+  chunking_.
+- Chunking is faster because `bytes.Buffer` must grow its allocated memory to accommodate the bytes it must store.
+- For various reasons, growing memory is expensive; therefor, the less times we have to grow, the more efficient our
+  system as a whole will perform.
+- Generally, anytime performing an operation requires an overhead, chunking may increase system performance. Some
+  examples of this are:
+    - Opening database transactions
+    - Calculating message checksums
+    - Allocating contiguous space
+- Aside from chunking, queuing can also help if your algorithm is optimized by supporting lookbehinds, or ordering.
+- Other references: Java Performance Tuning, Jack Shirazi (page 377)
