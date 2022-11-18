@@ -322,10 +322,15 @@ The worker pools pattern allows us to scale up processing a task in a controlled
 - Cancelling a context automatically cancels all its derived contexts
 
 ```go
-context.WithCancel
-context.WithDeadline
-context.WithTimeout
+context.WithCancel(parent Context) (ctx Context, cancel CancelFunc)
+context.WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc)
+context.WithTimeout(parent Context, teimout time.Duration) (Context, CancelFunc)
 ```
+
+- `WithCancel` returns a new `Context` that closes its done channel when the returned cancel function is called.
+- `WithDeadline` returns a new `Context` that closes its done channel when the machine's clock advances past the given
+  deadline.
+- `WithTimeout` returns a new `Context` that closes its done channel after the given timeout duration.
 
 The syntax for using context cancellation is shown below:
 
@@ -343,7 +348,33 @@ return
 }
   ```
 
-##### 3.1. Advantages of context
+##### 3.1. When should we use contexts?
+
+- From the official Go [library](https://pkg.go.dev/context), contexts should only be used _for request-scoped data that
+  transits processes and APIs, not for passing optional parameters to functions_.
+- The following are five heuristics to consider when using contexts (as recommended Katherine Cox's _Concurrency in
+  Go_):
+    - [1] The data should transit process or API boundaries: If you generate the data in your process' memory, it may
+      not be
+      a good candidate to be request-scoped data unless it is also passed across an API boundary
+    - [2] The data should be immutable
+    - [3] The data should trend toward simple types
+    - [4] The data should be data, not types with methods
+    - [5] The data should help decorate operations, not drive them: If your algorithm behaves differently based on what
+      is or isn't included it its Context, you have likely crossed over into the territory of optional parameters.
+
+- Below is a table of common data and how they fulfil the above heuristics.
+
+| **Data**                  | **1**   | **2**| **3**| **4**| **5**|
+|-----------------------|-----|-----|-----|-----|-----|
+| Request ID            |✓|✓|✓|✓|✓|
+| User ID               |✓|✓|✓|✓||
+| URL                   |✓|✓||||
+| API Server Connection |||||
+| Authorization Token   |✓|✓|✓|✓||
+| Request Token         |✓|✓|✓|||
+
+##### 3.2. Advantages of context
 
 - Useful for passing request IDs from handlers further into the application for request tracing and debugging.
 - Can be used to stop expensive operations from running unnecessarily. This is possible due to the propagated
