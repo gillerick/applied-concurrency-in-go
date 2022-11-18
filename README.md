@@ -331,16 +331,16 @@ The syntax for using context cancellation is shown below:
 
   ```go
   func doWork(ctx context.Context, input <-chan string) {
-for {
-select {
-case in := <-input:
-fmt.Println("Got some input:", in)
-case <-ctx.Done():
-fmt.Println("Out of time!", ctx.Err())
-return
-}
-}
-}
+      for {
+          select {
+          case in := <-input:
+              fmt.Println("Got some input:", in)
+          case <-ctx.Done():
+              fmt.Println("Out of time!", ctx.Err())
+              return
+          }
+      }
+  }
   ```
 
 ##### 3.1. Advantages of context
@@ -499,4 +499,8 @@ Upon implementing a rate limiter for the `ReadFile` endpoint, its requests are n
       response time.
     - Data requirements can be anticipated, and extra data can be transferred in batches together with the data that is
       needed at that moment, in anticipation of the extra data to be needed soon.
-- Other references: Java Performance Tuning, Jack Shirazi (page 377)
+
+### References
+1. Java Performance Tuning, _Jack Shirazi_ 
+2. Concurrency in Go: Tools and Techniques for Developers, _Katherine Cox-Buday_
+
