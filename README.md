@@ -331,16 +331,16 @@ The syntax for using context cancellation is shown below:
 
   ```go
   func doWork(ctx context.Context, input <-chan string) {
-      for {
-          select {
-          case in := <-input:
-              fmt.Println("Got some input:", in)
-          case <-ctx.Done():
-              fmt.Println("Out of time!", ctx.Err())
-              return
-          }
-      }
-  }
+for {
+select {
+case in := <-input:
+fmt.Println("Got some input:", in)
+case <-ctx.Done():
+fmt.Println("Out of time!", ctx.Err())
+return
+}
+}
+}
   ```
 
 ##### 3.1. Advantages of context
@@ -493,14 +493,29 @@ Upon implementing a rate limiter for the `ReadFile` endpoint, its requests are n
     - Calculating message checksums
     - Allocating contiguous space
 - Aside from chunking, queuing can also help if your algorithm is optimized by supporting lookbehinds, or ordering.
-- The following some _batching strategies_ that can be used: 
+- The following some _batching strategies_ that can be used:
     - Number of messages can be reduced by combining multiple messages into fewer batched messages.
     - Data can be split up and transferred into shorter batches if waiting for all the data is the cause of the delay in
       response time.
     - Data requirements can be anticipated, and extra data can be transferred in batches together with the data that is
       needed at that moment, in anticipation of the extra data to be needed soon.
 
+##### 6.2. Little's Law
+
+- In queuing theory, there is a low that-with enough sampling-predicts the througghput of u=your pipeline. It's called _
+  Little's Law_.
+- It's commonly expressed as: L=λW where
+    - L = the average number of units in the system
+    - λ = the average arrival rate of units
+    - W = the average time a unit spends in the system
+- The equation only applies to so-called _stable_ systems, one in which the rate that works enters the pipeline, or _
+  ingress_ is equal to the rate at which it exits the system, or _egress_.
+- If the rate of ingress exceeds the rate of egress, a system is said to be _unstable_ and has entered a _death-spiral_.
+- If the rate of ingress is less than the rate of egress, the resources into a system are being _underutilized_ and the
+  system is still considered unstable.
+
 ### References
-1. Java Performance Tuning, _Jack Shirazi_ 
+
+1. Java Performance Tuning, _Jack Shirazi_
 2. Concurrency in Go: Tools and Techniques for Developers, _Katherine Cox-Buday_
 
