@@ -329,8 +329,8 @@ context.WithTimeout
 
 The syntax for using context cancellation is shown below:
 
- ```go
-func doWork(ctx context.Context, input <-chan string) {
+  ```go
+  func doWork(ctx context.Context, input <-chan string) {
 for {
 select {
 case in := <-input:
@@ -341,7 +341,7 @@ return
 }
 }
 }
-```
+  ```
 
 ##### 3.1. Advantages of context
 
@@ -456,30 +456,30 @@ Upon implementing a rate limiter for the `ReadFile` endpoint, its requests are n
   to send to (e.g. disk). The example below demonstrates a simple comparison of a buffered write to a queue verses an
   unbuffered write.
 
-```go
-func BenchmarkUnbufferedWrite(b *testing.B) {
-	performWrite(b, tmpFileOrFatal())
-}
-func BenchmarkBufferedWrite(b *testing.B) {
-	bufferredFile := bufio.NewWriter(tmpFileOrFatal())
-	performWrite(b, bufio.NewWriter(bufferredFile))
-}
-func tmpFileOrFatal() *os.File {
-	file, err := os.CreateTemp("", "tmp")
-	if err != nil {
-		log.Fatalf("error: %v", err)
-	}
-	return file
-}
-func performWrite(b *testing.B, writer io.Writer) {
-	done := make(chan interface{})
-	defer close(done)
-	b.ResetTimer()
-	for bt := range take(done, repeat(done, byte(0)), b.N) {
-		writer.Write([]byte{bt.(byte)})
-	}
-}
-```
+  ```go
+  func BenchmarkUnbufferedWrite(b *testing.B) {
+      performWrite(b, tmpFileOrFatal())
+  }
+  func BenchmarkBufferedWrite(b *testing.B) {
+      bufferredFile := bufio.NewWriter(tmpFileOrFatal())
+      performWrite(b, bufio.NewWriter(bufferredFile))
+  }
+  func tmpFileOrFatal() *os.File {
+      file, err := os.CreateTemp("", "tmp")
+      if err != nil {
+          log.Fatalf("error: %v", err)
+      }
+      return file
+  }
+  func performWrite(b *testing.B, writer io.Writer) {
+      done := make(chan interface{})
+      defer close(done)
+      b.ResetTimer()
+      for bt := range take(done, repeat(done, byte(0)), b.N) {
+          writer.Write([]byte{bt.(byte)})
+      }
+  }
+  ```
 
 - Buffered write is much faster that the unbuffered write because in `bufio.Writer`, the writes are queued internally
   into a buffer until a sufficient chunk has been accumulated, and the chunk is written out, in a process known as _
@@ -493,4 +493,10 @@ func performWrite(b *testing.B, writer io.Writer) {
     - Calculating message checksums
     - Allocating contiguous space
 - Aside from chunking, queuing can also help if your algorithm is optimized by supporting lookbehinds, or ordering.
+- The following some _batching strategies_ that can be used: 
+    - Number of messages can be reduced by combining multiple messages into fewer batched messages.
+    - Data can be split up and transferred into shorter batches if waiting for all the data is the cause of the delay in
+      response time.
+    - Data requirements can be anticipated, and extra data can be transferred in batches together with the data that is
+      needed at that moment, in anticipation of the extra data to be needed soon.
 - Other references: Java Performance Tuning, Jack Shirazi (page 377)
