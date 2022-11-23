@@ -129,6 +129,24 @@ referred to as `lightweight threads`.
 NB: A good practice is to invoke the `Done` method as a deferred call at the beginning of the function to ensure it is
 called.
 
+### sync.Mutex and sync.RWMutex
+
+- `Mutex` stands for _mutual exclusion_ and is simply a way to guard critical sections of a program.
+- It is a mutually exclusive flag that acts as a gate-keeper to a section of code, allowing one thread in and blocking
+  access to all others. This ensures that the code being controlled will only be hit by a single thread at a time.
+- sync.Mutex `Unlock` should always be used within a `defer` statement. This ensures that the call always happens even
+  when _panicing_. Failing to so can result into a program deadlock.
+
+#### Critical sections
+
+- A `critical section` is a group of instructions/statements or region of code that need to be executed atomically.
+- They often reflect a bottleneck in a program and are relatively expensive to enter and exit these areas. There is
+  therefore a general attempt to minimize the time spent in them. Enters `sync.RWMutex`.
+- The `sync.RWMutex`, in addition to guarding access to memory, also offers control over the memory. That means, the
+  request can be specific to reading memory, in which case, permission can be granted unless the lock is being held for
+  writing. This means that an arbitrary number of readers can hold a reader lock so long as nothing else is holding a
+  writer lock.
+
 ### Race conditions
 
 - Race conditions occur when multiple goroutines read and write shared data without synchronization mechanisms.
