@@ -147,6 +147,9 @@ called.
   writing. This means that an arbitrary number of readers can hold a reader lock so long as nothing else is holding a
   writer lock.
 
+### Once
+
+
 ### Race conditions
 
 - Race conditions occur when multiple goroutines read and write shared data without synchronization mechanisms.
