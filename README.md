@@ -149,6 +149,32 @@ called.
 
 ### Once
 
+- The `sync.Once` is a type that utilizes some sync primitives internally
+  to ensure that only one call to `Do` ever calls the function passed in, even on different
+  goroutines.
+- In the below example, count is 1 as opposed to 100 since the increment call has been wrapped within the `Do` method of
+  once:
+
+  ```go
+  func main() {
+	var count int
+	var once sync.Once
+	increment := func() {
+		count++
+	}
+	var wg sync.WaitGroup
+	wg.Add(100)
+	for i := 0; i < 100; i++ {
+		go func() {
+			defer wg.Done()
+			once.Do(increment)
+		}()
+	}
+
+	wg.Wait()
+	fmt.Printf("Count is %d, not 100", count)
+  }
+  ```
 
 ### Race conditions
 
