@@ -592,6 +592,27 @@ Upon implementing a rate limiter for the `ReadFile` endpoint, its requests are n
 - If the rate of ingress is less than the rate of egress, the resources into a system are being _underutilized_ and the
   system is still considered unstable.
 
+#### 6. Pipelines
+
+- A pipeline is a series of steps that (1) take data in, (2) perform an operation on it, and (3) pass the data back out.
+- It is useful in `abstracting` details that don't matter to the greater flow.
+- By using a pipeline, the concerns of each stage are separated, providing the following benefits:
+    - You can modify stages independent of one another
+    - You can mix and match how stages are combined independent of modifying the stages
+    - You can process each stage concurrent to upstream or downstream stages
+    - You can fan-out or rate-limit portions of the pipeline
+
+#### 6.1. Properties of a pipeline stage
+
+- A stage consumes and returns the **same** type
+- A stage must be reified by the language so that it may be passed
+  around. [Reification means that the language exposes a concept to the developers so
+  that they can work with it directly. Functions in Go, for instance, are said to be reified because you can define variables that
+  have a type of a function signature. This also means you can pass functions around your program.]
+- Stages can perform their operations in a `batch` or `stream` fashion.
+- **Batch processing** means that they operate on chunks of data all at once instead of one discrete value at a time.
+- **Stream processing** means that a stage receives and emits one element at a time.
+
 ### References
 
 1. Java Performance Tuning, _Jack Shirazi_
